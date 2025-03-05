@@ -3,11 +3,20 @@
 
 #include "AssimpFunctionLibrary.h"
 #include "UE_Assimp.h"
-#include <Runtime\Core\Public\Windows\COMPointer.h>
 
-#if 0  // PLATFORM_WINDOWS
-#include <Runtime\Core\Public\HAL\FileManager.h>
-#include <Runtime\Core\Public\Misc\Paths.h>
+
+
+#if PLATFORM_ANDROID
+#include "assimp/cimport.h"
+#include "AIScene.h"
+#include "AIBone.h"
+
+#endif
+
+#if  PLATFORM_WINDOWS
+    //#include <Runtime\Core\Public\HAL\FileManager.h>   // no need
+     //#include <Runtime\Core\Public\Misc\Paths.h>  // no need
+#include <Runtime\Core\Public\Windows\COMPointer.h>
 #endif
 
 
@@ -271,12 +280,22 @@ bool UAssimpFunctionLibrary::FileDialogShared(bool bSave, const void* ParentWind
 
 #endif
 #pragma endregion
+
+#if PLATFORM_ANDROID
+    UE_LOG(LogTemp, Warning, TEXT("TootOpenFileDlg22 Android platform doesn't implemented this function...."));
+    return false;
+#endif
+
+
+
 }
 
 void UAssimpFunctionLibrary::ImportScenes(TArray<FString> InFilenames, UObject* WorldContextObject,
                                           TArray<UAIScene*>& Scenes, int Flags, bool DisableAutoSpaceChange)
 {
+#if PLATFORM_WINDOWS
 	Assimp::DefaultLogger::set(new UEAssimpStream());
+#endif
 
     for (FString FileName : InFilenames)
     {
@@ -290,7 +309,9 @@ void UAssimpFunctionLibrary::ImportScenes(TArray<FString> InFilenames, UObject* 
 
 UAIScene* UAssimpFunctionLibrary::ImportScene(FString FileName, UObject* WorldContextObject, int Flags, bool DisableAutoSpaceChange)
 {
-	Assimp::DefaultLogger::set(new UEAssimpStream());
+#if PLATFORM_WINDOWS
+    Assimp::DefaultLogger::set(new UEAssimpStream());
+#endif
 
         if (!DisableAutoSpaceChange) {
            Flags |= aiProcess_MakeLeftHanded | aiProcessPreset_TargetRealtime_Quality;
@@ -315,7 +336,9 @@ void UAssimpFunctionLibrary::ImportScenesAsync(TArray<FString> InFilenames,UObje
 {
 
 	//I'm a noob in realms of async if you find a better way to keep data do a pull request
-	Assimp::DefaultLogger::set(new UEAssimpStream());
+#if PLATFORM_WINDOWS
+    Assimp::DefaultLogger::set(new UEAssimpStream());
+#endif
 
 	if (!DisableAutoSpaceChange) {
 		Flags |= aiProcess_MakeLeftHanded | aiProcessPreset_TargetRealtime_Quality;

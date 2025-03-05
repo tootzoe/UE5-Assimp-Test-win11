@@ -35,5 +35,9 @@
 			"Name": "UE_Assimp",
 			"Enabled": true
 		}
+	],
+	"TargetPlatforms": [
+		"Android",
+		"Windows"
 	]
 }

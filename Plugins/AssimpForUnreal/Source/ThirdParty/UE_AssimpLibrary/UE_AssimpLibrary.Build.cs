@@ -26,20 +26,20 @@ public class UE_AssimpLibrary : ModuleRules
 
 		string BinaryFolder = BinFolder(Target);
 
-        string aa = Path.Combine(ModuleDirectory, "assimp", "include");
+       // string aa = Path.Combine(ModuleDirectory, "assimp", "include");
 
-        System.Console.WriteLine(aa);
+       // System.Console.WriteLine(aa);
 
 
 		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "assimp", "include"));
 		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "assimp", "code"));
+
+
+
 		if (Target.Platform == UnrealTargetPlatform.Win64)
 		{
 			// Add the import library
             PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "assimp", "bin", "assimp-vc143-mt.lib"));
-
-
-
 
 			//RuntimeDependencies.Add(Path.Combine(ModuleDirectory,"assimp" , "bin","Release","assimp.dll"));
 
@@ -79,7 +79,14 @@ public class UE_AssimpLibrary : ModuleRules
 		}
 		else if (Target.Platform == UnrealTargetPlatform.Android)
 		{
-			PublicAdditionalLibraries.Add(Path.Combine(BinaryFolder, "arm64-v8a", "libassimp.so"));
+
+
+            PublicAdditionalLibraries.Add(Path.Combine(BinaryFolder, "arm64-v8a", "libassimp.a"));
+
+
+
+
+
 		}
 		else if (Target.Platform == UnrealTargetPlatform.Linux)
 		{
